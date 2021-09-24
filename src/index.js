@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scene
     const scene = new THREE.Scene();
 
+    //Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff);
+    const directLight = new THREE.DirectionalLight(0xffffff);
+
+    scene.add(ambientLight, directLight);
+
     /**
      * Loaders
      */
