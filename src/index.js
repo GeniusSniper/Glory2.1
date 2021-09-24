@@ -45,6 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // scene.add(cube);
 
+    gltfLoader.load('range.glb', gltf => {
+        console.log('loaded');
+        scene.add(gltf.scene);
+    })
+
     /**
      * Sizes
      */
