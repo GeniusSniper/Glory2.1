@@ -2,6 +2,7 @@
 import * as dat from 'dat.gui';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
@@ -91,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Controls
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
+
+    const control = new PointerLockControls(camera, canvas);
 
     /**
      * Renderer
