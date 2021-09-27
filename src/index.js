@@ -7,8 +7,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 let keyborad = [];
+let time = Date.now();
+let timer = 0;
 
 addEventListener('keydown', e => {
+    console.log(e.key);
     keyborad[e.key] = true;
 });
 
@@ -17,7 +20,6 @@ addEventListener('keyup', e => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-
     /**
      * Base
      */
@@ -115,20 +117,55 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+    //PlayerControlsMovement
+    let _vector = new THREE.Vector3();
+    let keyboradControl = (time) => {
+        if(keyborad['w']){
+            moveforward(time * .01)
+        }
+        if(keyborad['s']){
+            moveforward(-time * .01)
+        }
+        if(keyborad['d']){
+            moveSide(time * .01)
+        }
+        if(keyborad['a']){
+            moveSide(-time * .01)
+        }
+        if(keyborad['0'] && timer < 0){
+            console.log(camera);
+            timer = 10;
+        }
+        timer--;
+    }
+
+    let moveforward = distance => {
+        _vector.setFromMatrixColumn( camera.matrix, 0 );
+
+        _vector.crossVectors( camera.up, _vector );
+
+        camera.position.addScaledVector( _vector, distance );
+    }
+    let moveSide = distance => {
+
+        _vector.setFromMatrixColumn( camera.matrix, 0 );
+
+        camera.position.addScaledVector( _vector, distance );
+
+    };
     /**
      * Animate
      */
     const clock = new THREE.Clock();
-    let time = Date.now();
 
-    const tick = () =>
-    {
+    const tick = () => {
         const elapsedTime = clock.getElapsedTime();
         const currentTime = Date.now();
         const deltaTime = currentTime - time;
         time = currentTime;
 
         // Update controls
+        keyboradControl(deltaTime);
         // controls.update();
 
         // Render
