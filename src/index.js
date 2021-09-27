@@ -6,6 +6,16 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
+let keyborad = [];
+
+addEventListener('keydown', e => {
+    keyborad[e.key] = true;
+});
+
+addEventListener('keyup', e => {
+    keyborad[e.key] = false;
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
     /**
