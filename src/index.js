@@ -1,8 +1,8 @@
 // import './index.css';
 import * as dat from 'dat.gui';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+// import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
@@ -90,10 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.add(camera);
 
     // Controls
-    const controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
+    // const controls = new OrbitControls(camera, canvas);
+    // controls.enableDamping = true;
 
-    const control = new PointerLockControls(camera, canvas);
+    // const control = new PointerLockControls(camera, canvas);
 
     /**
      * Renderer
@@ -109,13 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
      * Animate
      */
     const clock = new THREE.Clock();
+    let time = Date.now();
 
     const tick = () =>
     {
         const elapsedTime = clock.getElapsedTime();
+        const currentTime = Date.now();
+        const deltaTime = currentTime - time;
+        time = currentTime;
 
         // Update controls
-        controls.update();
+        // controls.update();
 
         // Render
         renderer.render(scene, camera);
