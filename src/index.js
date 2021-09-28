@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
     let euler = new THREE.Euler(0, 0, 0, 'YXZ');
-    let unlock = false;
+    let unlock = true;
     let keyboradControl = (time) => {
         if(keyborad['w']){
             moveforward(time * .01);
@@ -139,19 +139,19 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(camera.rotation);
             timer = 10;
         }
-        if(keyborad['q']){
-            unlock = false;
+        if(keyborad['Escape']){
+            unlock = true;
             document.body.ownerDocument.exitPointerLock();
         }
         if(keyborad['y']){
-            unlock = true;
+            unlock = false;
             document.body.requestPointerLock();
         }
         timer--;
     }
 
-    addEventListener('mousemove', e => {
-        if(!unlock) return ; 
+    let mousemove = e => {
+        if(unlock) return ; 
         const movementX = e.movementX || 0;
         const movementY = e.movementY || 0;
 
@@ -163,7 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
         euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
         camera.quaternion.setFromEuler( euler );
-    })
+    }
+
+    addEventListener('mousemove', mousemove);
 
 
     let moveforward = distance => {
