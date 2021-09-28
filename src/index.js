@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
     let euler = new THREE.Euler(0, 0, 0, 'YXZ');
-    let unlock = true;
+    let lock = true;
     let keyboradControl = (time) => {
         if(keyborad['w']){
             moveforward(time * .01);
@@ -134,24 +134,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if(keyborad['a']){
             moveSide(-time * .01);
         }
-        if(keyborad['0'] && timer < 0){
-            console.log(camera);
-            console.log(camera.rotation);
-            timer = 10;
+        if(keyborad['0']){
+            if(timer < 0){
+                console.log(camera);
+                console.log(camera.rotation);
+                timer = 5;
+            } else {
+                timer--;
+            }
         }
-        if(keyborad['Escape']){
-            unlock = true;
-            document.body.ownerDocument.exitPointerLock();
+        if(keyborad['q']){
+            console.log('here');
+            lock = true;
+            canvas.ownerDocument.exitPointerLock();
         }
         if(keyborad['y']){
-            unlock = false;
-            document.body.requestPointerLock();
+            lock = false;
+            canvas.requestPointerLock();
         }
-        timer--;
     }
 
     let mousemove = e => {
-        if(unlock) return ; 
+        if(lock) return ; 
         const movementX = e.movementX || 0;
         const movementY = e.movementY || 0;
 
