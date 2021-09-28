@@ -119,25 +119,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
+    let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    let unlock = false;
     let keyboradControl = (time) => {
         if(keyborad['w']){
-            moveforward(time * .01)
+            moveforward(time * .01);
         }
         if(keyborad['s']){
-            moveforward(-time * .01)
+            moveforward(-time * .01);
         }
         if(keyborad['d']){
-            moveSide(time * .01)
+            moveSide(time * .01);
         }
         if(keyborad['a']){
-            moveSide(-time * .01)
+            moveSide(-time * .01);
         }
         if(keyborad['0'] && timer < 0){
             console.log(camera);
+            console.log(camera.rotation);
             timer = 10;
+        }
+        if(keyborad['q']){
+            unlock = false;
+            document.body.ownerDocument.exitPointerLock();
+        }
+        if(keyborad['y']){
+            unlock = true;
+            document.body.requestPointerLock();
         }
         timer--;
     }
+
+    addEventListener('mousemove', e => {
+        if(!unlock) return ; 
+        const movementX = e.movementX || 0;
+        const movementY = e.movementY || 0;
+
+        euler.setFromQuaternion( camera.quaternion );
+
+        euler.y -= movementX * 0.002;
+        euler.x -= movementY * 0.002;
+
+        euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
+
+        camera.quaternion.setFromEuler( euler );
+    })
+
 
     let moveforward = distance => {
         _vector.setFromMatrixColumn( camera.matrix, 0 );
