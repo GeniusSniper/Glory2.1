@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
     let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    // let euler = new THREE.Euler();
     let lock = true;
     let keyboradControl = (time) => {
         if(keyborad['w']){
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(timer < 0){
                 console.log(camera);
                 console.log(camera.rotation);
-                console.log(controls);
+                // console.log(controls);
                 timer = 5;
             } else {
                 timer--;
@@ -160,22 +161,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // let mousemove = e => {
-    //     if(lock) return ; 
-    //     const movementX = e.movementX || 0;
-    //     const movementY = e.movementY || 0;
+    let clamp = (n, min, max) => {
+        if(n > max){
+            return max;
+        } else if(n < min){
+          return min
+        } else{
+            return n;
+        }
+      }
 
-    //     euler.setFromQuaternion( camera.quaternion );
+    let mousemove = e => {
+        if(lock) return ; 
+        const movementX = e.movementX || 0;//left is -1, right is +1
+        const movementY = e.movementY || 0;//up is -1, down is +1
 
-    //     euler.y -= movementX * 0.002;
-    //     euler.x -= movementY * 0.002;
+        // if(timer < 0){
+        //     console.log(movementX, movementY);
+        //     timer = 5;
+        // } else {
+        //     timer--;
+        // }
 
-    //     euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
+        euler.x -= movementY * .002;
+        euler.y -= movementX * .002;
 
-    //     camera.quaternion.setFromEuler( euler );
-    // }
+        euler.x = clamp(euler.x, -Math.PI/2, Math.PI/2);
 
-    // addEventListener('mousemove', mousemove);
+        // euler.setFromQuaternion( camera.quaternion );
+
+        // euler.y -= movementX * 0.002;
+        // euler.x -= movementY * 0.002;
+
+        // euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
+
+        camera.quaternion.setFromEuler( euler );
+    }
+
+    addEventListener('mousemove', mousemove);
 
 
     let moveforward = distance => {
