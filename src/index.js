@@ -1,10 +1,11 @@
 // import './index.css';
 import * as dat from 'dat.gui';
 import * as THREE from 'three';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+// import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 // import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import Stats from 'stats.js'
 
 let keyborad = [];
 let time = Date.now();
@@ -19,10 +20,15 @@ addEventListener('keyup', e => {
     keyborad[e.key] = false;
 });
 
+var stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 document.addEventListener('DOMContentLoaded', () => {
     /**
      * Base
      */
+    //FPS
+
     // Debug
     const gui = new dat.GUI({
         width: 400
@@ -104,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Controls
     // const controls = new OrbitControls(camera, canvas);
     // controls.enableDamping = true;
-
+    // let controls = new FirstPersonControls(camera, canvas);
     // const control = new PointerLockControls(camera, canvas);
 
     /**
@@ -138,13 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if(timer < 0){
                 console.log(camera);
                 console.log(camera.rotation);
+                console.log(controls);
                 timer = 5;
             } else {
                 timer--;
             }
         }
         if(keyborad['q']){
-            console.log('here');
             lock = true;
             canvas.ownerDocument.exitPointerLock();
         }
@@ -154,22 +160,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let mousemove = e => {
-        if(lock) return ; 
-        const movementX = e.movementX || 0;
-        const movementY = e.movementY || 0;
+    // let mousemove = e => {
+    //     if(lock) return ; 
+    //     const movementX = e.movementX || 0;
+    //     const movementY = e.movementY || 0;
 
-        euler.setFromQuaternion( camera.quaternion );
+    //     euler.setFromQuaternion( camera.quaternion );
 
-        euler.y -= movementX * 0.002;
-        euler.x -= movementY * 0.002;
+    //     euler.y -= movementX * 0.002;
+    //     euler.x -= movementY * 0.002;
 
-        euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
+    //     euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
-        camera.quaternion.setFromEuler( euler );
-    }
+    //     camera.quaternion.setFromEuler( euler );
+    // }
 
-    addEventListener('mousemove', mousemove);
+    // addEventListener('mousemove', mousemove);
 
 
     let moveforward = distance => {
@@ -192,6 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const clock = new THREE.Clock();
 
     const tick = () => {
+        stats.begin();
+
         const elapsedTime = clock.getElapsedTime();
         const currentTime = Date.now();
         const deltaTime = currentTime - time;
@@ -199,13 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update controls
         keyboradControl(deltaTime);
-        // controls.update();
+        // controls.update(deltaTime * .01);
 
         // Render
         renderer.render(scene, camera);
 
         // Call tick again on the next frame
         window.requestAnimationFrame(tick);
+        stats.end();
     }
 
     tick();
