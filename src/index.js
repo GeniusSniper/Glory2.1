@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         width: 400
     });
 
+    let obj = {};
+
     // Canvas
     const canvas = document.querySelector('canvas.webgl');
 
@@ -70,9 +72,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // scene.add(cube);
 
+    //Archer
     gltfLoader.load('range.glb', gltf => {
         scene.add(gltf.scene);
-    })
+    });
+
+    let updatePistol = () => {
+        if(obj.pistol){
+            obj.pistol.position.set(
+                camera.position.x - Math.sin(camera.rotation.y + Math.PI/6) * 0.75,
+                camera.position.y - 0.5 + Math.sin(time*4 + camera.position.x + camera.position.z)*0.01,
+                camera.position.z + Math.cos(camera.rotation.y + Math.PI/6) * 0.75
+            )
+        }
+    }
+
+    //pistol
+    gltfLoader.load('pistol.gltf', gltf => {
+        obj.pistol = gltf.scene;
+        updatePistol();
+        scene.add(obj.pistol);
+    });
 
     /**
      * Sizes
@@ -132,20 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let keyboradControl = (time) => {
         if(keyborad['w']){
             moveforward(time * .01);
+            updatePistol();
         }
         if(keyborad['s']){
             moveforward(-time * .01);
+            updatePistol();
         }
         if(keyborad['d']){
             moveSide(time * .01);
+            updatePistol();
         }
         if(keyborad['a']){
             moveSide(-time * .01);
+            updatePistol();
         }
         if(keyborad['0']){
             if(timer < 0){
                 console.log(camera);
                 console.log(camera.rotation);
+                console.log(obj.pistol);
                 // console.log(controls);
                 timer = 5;
             } else {
