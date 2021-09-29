@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     // Base camera
     const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100);
-    camera.position.x = 4;
+    camera.position.x = 0;
     camera.position.y = 2;
-    camera.position.z = 4;
+    camera.position.z = 9;
     scene.add(camera);
 
     // Controls
@@ -195,8 +195,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else{
             return n;
         }
-      }
+    }
 
+    let updatePistolRotation = () => {
+        obj.pistol.rotation.set(
+            camera.rotation.x,
+            camera.rotation.y - Math.PI,
+            0
+        )
+    }
+
+    //player movement control
     let mousemove = e => {
         if(lock) return ; 
         const movementX = e.movementX || 0;//left is -1, right is +1
@@ -218,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
         camera.quaternion.setFromEuler( euler );
+        updatePistolRotation();
 
         //camera rotations
         // let xrotation = camera.rotation.x - movementY * .002,
