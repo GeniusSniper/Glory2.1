@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
-    // let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    let euler = new THREE.Euler(0, 0, 0, 'YXZ');
     // let parentEuler = new THREE.Euler();
     // let euler = new THREE.Euler(parentEuler);
     let lock = true;
@@ -178,10 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const movementY = e.movementY || 0;//up is -1, down is +1
 
         //mousemove controls
-        // euler.x -= movementY * .002;
-        // euler.y -= movementX * .002;
+        euler.x -= movementY * .002;
+        euler.y -= movementX * .002;
 
-        // euler.x = clamp(euler.x, -Math.PI/2, Math.PI/2);
+        euler.x = clamp(euler.x, -Math.PI/2, Math.PI/2);
+        // euler.y = clamp(euler.y, -Math.PI, Math.PI);
 
         //pointer lock controls
         // euler.setFromQuaternion( camera.quaternion );
@@ -191,14 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
-        // camera.quaternion.setFromEuler( euler );
+        camera.quaternion.setFromEuler( euler );
 
         //camera rotations
-        let xrotation = camera.rotation.x - movementY * .002,
-            yrotation = camera.rotation.y - movementX * .002;
+        // let xrotation = camera.rotation.x - movementY * .002,
+        //     yrotation = camera.rotation.y - movementX * .002;
         
-        xrotation = clamp(xrotation, -Math.PI/2, Math.PI/2);
-        yrotation = clamp(yrotation, -Math.PI, Math.PI);
+        // xrotation = clamp(xrotation, -Math.PI/2, Math.PI/2);
+        // yrotation = clamp(yrotation, -Math.PI, Math.PI);
 
         // euler.x = xrotation;
         // euler.y = yrotation;
@@ -209,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // camera.quaternion.setFromEuler(euler);
 
 
-        camera.rotation.x = xrotation;
-        camera.rotation.y = yrotation;
+        // camera.rotation.x = xrotation;
+        // camera.rotation.y = yrotation;
 
         
         //debugging
