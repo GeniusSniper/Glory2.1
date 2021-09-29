@@ -126,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
     // let euler = new THREE.Euler(0, 0, 0, 'YXZ');
-    let euler = new THREE.Euler();
+    // let parentEuler = new THREE.Euler();
+    // let euler = new THREE.Euler(parentEuler);
     let lock = true;
     let keyboradControl = (time) => {
         if(keyborad['w']){
@@ -176,14 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const movementX = e.movementX || 0;//left is -1, right is +1
         const movementY = e.movementY || 0;//up is -1, down is +1
 
-        //debugging
-        // if(timer < 0){
-        //     console.log(movementX, movementY);
-        //     timer = 5;
-        // } else {
-        //     timer--;
-        // }
-
         //mousemove controls
         // euler.x -= movementY * .002;
         // euler.y -= movementX * .002;
@@ -209,10 +202,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // euler.x = xrotation;
         // euler.y = yrotation;
+        
+        // euler.x = xrotation;
+        // parentEuler.y = yrotation;
+        
         // camera.quaternion.setFromEuler(euler);
 
+
         camera.rotation.x = xrotation;
-        camera.rotationy.y = yrotation;
+        camera.rotation.y = yrotation;
+
+        
+        //debugging
+        // if(timer < 0){
+        //     console.log(movementX, movementY);
+        //     console.log(euler, parentEuler);
+        //     timer = 5;
+        // } else {
+        //     timer--;
+        // }
     }
 
     addEventListener('mousemove', mousemove);
