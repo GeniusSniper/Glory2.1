@@ -125,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //PlayerControlsMovement
     let _vector = new THREE.Vector3();
-    let euler = new THREE.Euler(0, 0, 0, 'YXZ');
-    // let euler = new THREE.Euler();
+    // let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    let euler = new THREE.Euler();
     let lock = true;
     let keyboradControl = (time) => {
         if(keyborad['w']){
@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const movementX = e.movementX || 0;//left is -1, right is +1
         const movementY = e.movementY || 0;//up is -1, down is +1
 
+        //debugging
         // if(timer < 0){
         //     console.log(movementX, movementY);
         //     timer = 5;
@@ -183,11 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
         //     timer--;
         // }
 
-        euler.x -= movementY * .002;
-        euler.y -= movementX * .002;
+        //mousemove controls
+        // euler.x -= movementY * .002;
+        // euler.y -= movementX * .002;
 
-        euler.x = clamp(euler.x, -Math.PI/2, Math.PI/2);
+        // euler.x = clamp(euler.x, -Math.PI/2, Math.PI/2);
 
+        //pointer lock controls
         // euler.setFromQuaternion( camera.quaternion );
 
         // euler.y -= movementX * 0.002;
@@ -195,7 +198,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
-        camera.quaternion.setFromEuler( euler );
+        // camera.quaternion.setFromEuler( euler );
+
+        //camera rotations
+        let xrotation = camera.rotation.x - movementY * .002,
+            yrotation = camera.rotation.y - movementX * .002;
+        
+        xrotation = clamp(xrotation, -Math.PI/2, Math.PI/2);
+        yrotation = clamp(yrotation, -Math.PI, Math.PI);
+
+        // euler.x = xrotation;
+        // euler.y = yrotation;
+        // camera.quaternion.setFromEuler(euler);
+
+        camera.rotation.x = xrotation;
+        camera.rotationy.y = yrotation;
     }
 
     addEventListener('mousemove', mousemove);
