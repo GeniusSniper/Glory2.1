@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     floorBody.addShape(floorShape);
     floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
     world.addBody(floorBody);
-    
+
     //Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff);
     const directLight = new THREE.DirectionalLight(0xffffff);
@@ -312,14 +312,20 @@ document.addEventListener('DOMContentLoaded', () => {
      * Animate
      */
     const clock = new THREE.Clock();
+    // let oldElapsedTime = 0;
 
     const tick = () => {
         stats.begin();
 
         const elapsedTime = clock.getElapsedTime();
+        // const deltaTime = elapsedTime - oldElapsedTime;
+        // oldElapsedtime = elapsedTime;
         const currentTime = Date.now();
         const deltaTime = currentTime - time;
         time = currentTime;
+
+        //update phycics world
+        world.step(1/60, deltaTime, 3);
 
         // Update controls
         keyboradControl(deltaTime);
