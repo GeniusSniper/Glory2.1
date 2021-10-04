@@ -102,7 +102,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // scene.add(cube);
 
     //Archer
+    let archer = new CANNON.Body({
+        mass: 0
+    });
     gltfLoader.load('range.glb', gltf => {
+        // console.log(gltf);
+        gltf.scene.traverse( child => {
+            // console.log(child);
+            if(child.isMesh){
+                let verts = [], faces = [];
+
+                // Get vertices
+                let vert = child.geometry.index.array;
+                console.log(vert);
+                for(let i = 0; i < child.geometry.index.count / 3; i+=3){
+                    verts.push(new CANNON.Vec3( vert[i], vert[i + 1], vert[i + 2]));
+                    faces.push([ vert[i], vert[i + 1], vert[i + 2] ]);
+                }
+
+                // Construct polyhedron
+                let part = new CANNON.ConvexPolyhedron(verts, faces);
+
+                archer.addShape(part);
+            }
+        })
         scene.add(gltf.scene);
     });
 
