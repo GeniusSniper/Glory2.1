@@ -1,5 +1,6 @@
 // import './index.css';
 import * as dat from 'dat.gui';
+import CANNON from 'cannon';//physics engine
 import * as THREE from 'three';
 // import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 // import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
@@ -41,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scene
     const scene = new THREE.Scene();
+
+    //World
+    const world = new CANNON.World();
 
     //Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff);
