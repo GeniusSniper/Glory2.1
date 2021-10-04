@@ -45,7 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //World
     const world = new CANNON.World();
+    world.broadphase = new CANNON.SAPBroadphase(world); // creating ground
+    world.allowSleep = true;
+    world.gravity.set(0, - 9.82, 0);
 
+    // Materials
+    const defaultMaterial = new CANNON.Material('default');// default material for cannon
+
+    const defaultContactMaterial = new CANNON.ContactMaterial(
+        defaultMaterial,
+        defaultMaterial,{
+            friction: .1,
+            restitution: .7
+        }
+    );
+    world.addContactMaterial(defaultContactMaterial);
+    world.defaultContactMaterial = defaultContactMaterial;
+
+
+    //Floor
+    const floorShape = new CANNON.Plane();
+    const floorBody = new CANNON.Body();
+    floorBody.mass = 0;
+    floorBody.addShape(floorShape);
+    floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
+    world.addBody(floorBody);
+    
     //Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff);
     const directLight = new THREE.DirectionalLight(0xffffff);
