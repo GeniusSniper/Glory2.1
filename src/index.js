@@ -77,22 +77,22 @@ document.addEventListener('DOMContentLoaded', () => {
         scene.add(gltf.scene);
     });
 
-    let updatePistol = () => {
-        if(obj.pistol){
-            obj.pistol.position.set(
-                camera.position.x - Math.sin(camera.rotation.y + Math.PI/6) * 0.75,
-                camera.position.y - 0.5 + Math.sin(time*4 + camera.position.x + camera.position.z)*0.01,
-                camera.position.z + Math.cos(camera.rotation.y + Math.PI/6) * 0.75
-            )
-        }
-    }
+    // let updatePistol = () => {
+    //     if(obj.pistol){
+    //         obj.pistol.position.set(
+    //             camera.position.x - Math.sin(camera.rotation.y + Math.PI/6) * 0.75,
+    //             camera.position.y - 0.5 + Math.sin(time*4 + camera.position.x + camera.position.z)*0.01,
+    //             camera.position.z + Math.cos(camera.rotation.y + Math.PI/6) * 0.75
+    //         )
+    //     }
+    // }
 
     //pistol
-    gltfLoader.load('pistol.gltf', gltf => {
-        obj.pistol = gltf.scene;
-        updatePistol();
-        scene.add(obj.pistol);
-    });
+    // gltfLoader.load('pistol.gltf', gltf => {
+    //     obj.pistol = gltf.scene;
+    //     updatePistol();
+    //     scene.add(obj.pistol);
+    // });
 
     /**
      * Sizes
@@ -152,25 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let keyboradControl = (time) => {
         if(keyborad['w']){
             moveforward(time * .01);
-            updatePistol();
+            // updatePistol();
         }
         if(keyborad['s']){
             moveforward(-time * .01);
-            updatePistol();
+            // updatePistol();
         }
         if(keyborad['d']){
             moveSide(time * .01);
-            updatePistol();
+            // updatePistol();
         }
         if(keyborad['a']){
             moveSide(-time * .01);
-            updatePistol();
+            // updatePistol();
         }
         if(keyborad['0']){
             if(timer < 0){
                 console.log(camera);
                 console.log(camera.rotation);
-                console.log(obj.pistol);
+                // console.log(obj.pistol);
                 // console.log(controls);
                 timer = 5;
             } else {
@@ -180,6 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(keyborad['q']){
             lock = true;
             canvas.ownerDocument.exitPointerLock();
+        }
+        if(keyborad['Escape']){
+            lock = true;
         }
         if(keyborad['y']){
             lock = false;
@@ -197,17 +200,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let updatePistolRotation = () => {
-        obj.pistol.rotation.set(
-            camera.rotation.x,
-            camera.rotation.y - Math.PI,
-            0
-        )
-    }
+    // let updatePistolRotation = () => {
+    //     obj.pistol.rotation.set(
+    //         camera.rotation.x,
+    //         camera.rotation.y - Math.PI,
+    //         0
+    //     )
+    // }
 
     //player movement control
     let mousemove = e => {
-        if(lock) return ; 
+        if(lock) return; 
         const movementX = e.movementX || 0;//left is -1, right is +1
         const movementY = e.movementY || 0;//up is -1, down is +1
 
@@ -227,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // euler.x = Math.max( -Math.PI / 2, Math.min( Math.PI/2, euler.x ) );
 
         camera.quaternion.setFromEuler( euler );
-        updatePistolRotation();
+        // updatePistolRotation();
 
         //camera rotations
         // let xrotation = camera.rotation.x - movementY * .002,
