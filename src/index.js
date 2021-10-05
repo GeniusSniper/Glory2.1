@@ -110,20 +110,32 @@ document.addEventListener('DOMContentLoaded', () => {
         gltf.scene.traverse( child => {
             // console.log(child);
             if(child.isMesh){
-                let verts = [], faces = [];
+                // let verts = [], faces = [];
 
-                // Get vertices
-                let vert = child.geometry.index.array;
-                console.log(vert);
-                for(let i = 0; i < child.geometry.index.count / 3; i+=3){
-                    verts.push(new CANNON.Vec3( vert[i], vert[i + 1], vert[i + 2]));
-                    faces.push([ vert[i], vert[i + 1], vert[i + 2] ]);
-                }
+                // // Get vertices
+                // let arcPos = child.geometry.attributes.position.array,
+                //     arcIdx = child.geometry.index.array,
+                //     arcSize = child.geometry.attributes.position.itemSize;
+                // for(let i = 0; i < arcPos.length; i+=3){
+                //     verts.push(
+                //         new CANNON.Vec3( arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2])
+                //     );
+                //     // faces.push(arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2]);
+                // }
 
-                // Construct polyhedron
-                let part = new CANNON.ConvexPolyhedron(verts, faces);
+                // // console.log(verts, faces);
+                // console.log(child.geometry);
+                // // Construct polyhedron
+                // let part = new CANNON.ConvexPolyhedron(verts, faces);
 
+                // archer.addShape(part);
+
+                let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
+
+                let part = new CANNON.ConvexPolyhedron(child.geometry.vertices, child.geometry.faces);
                 archer.addShape(part);
+                // console.log(archerGeo);
+                // console.log(child.geometry);
             }
         })
         scene.add(gltf.scene);
