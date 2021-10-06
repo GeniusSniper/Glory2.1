@@ -142,16 +142,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // archer.addShape(part);
 
+                let verts = [], faces = [], scale = child.scale;
                 let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
-                let part = new CANNON.ConvexPolyhedron(child.geometry.vertices, child.geometry.faces);
+                for (let i = 0; i < archerGeo.vertices.length; i++) {
+
+                    let x = scale.x * archerGeo.vertices[i].x;
+                    let y = scale.y * archerGeo.vertices[i].y;
+                    let z = scale.z * archerGeo.vertices[i].z;
+            
+                    verts.push(new CANNON.Vec3(x, y, z));
+                }
+            
+                for (let i = 0; i < archerGeo.faces.length; i++) {
+            
+                    let a = archerGeo.faces[i].a;
+                    let b = archerGeo.faces[i].b;
+                    let c = archerGeo.faces[i].c;
+            
+                    faces.push([a, b, c]);
+                }
+                let part = new CANNON.ConvexPolyhedron(verts, faces);
                 archer.addShape(part);
-                // console.log(archerGeo);
-                // console.log(child.geometry);
             }
         })
         scene.add(gltf.scene);
-        console.log(gltf.scene);
     });
 
     //Create Archer body
@@ -159,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // let z180 = new CANNON.Quaternion();
     // z180.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI );
     // archer.quaternion = z180.mult(archer.quaternion);
+
     world.addBody(archer);
-    console.log(archer);
 
     // let updatePistol = () => {
     //     if(obj.pistol){
@@ -296,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(timer < 0){
                 console.log(camera);
                 console.log(camera.rotation);
+                console.log(archer.position);
                 // console.log(obj.pistol);
                 // console.log(controls);
                 timer = 5;
