@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let verts = [], faces = [], scale = child.scale;
                 let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
+                //create vertices
                 for (let i = 0; i < archerGeo.vertices.length; i++) {
 
                     let x = scale.x * archerGeo.vertices[i].x;
@@ -154,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     verts.push(new CANNON.Vec3(x, y, z));
                 }
             
+                //create faces
                 for (let i = 0; i < archerGeo.faces.length; i++) {
             
                     let a = archerGeo.faces[i].a;
@@ -162,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
                     faces.push([a, b, c]);
                 }
+
+                //setup the phycics
                 let part = new CANNON.ConvexPolyhedron(verts, faces);
                 archer.addShape(part);
             }
