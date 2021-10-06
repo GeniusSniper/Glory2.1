@@ -35,6 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
         width: 400
     });
 
+    const debugObject = {}
+
+    debugObject.createSphere = () => {
+        createSphere(
+            Math.random() * .5, {
+                x: (Math.random() - .5) * .3,
+                y: 3, 
+                z: (Math.random() - .5) * 3
+            })
+    };
+    gui.add(debugObject, 'createSphere');
+
     let obj = {};
 
     // Canvas
@@ -64,12 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     //Floor
-    const floorShape = new CANNON.Plane();
-    const floorBody = new CANNON.Body();
-    floorBody.mass = 0;
-    floorBody.addShape(floorShape);
-    floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
-    world.addBody(floorBody);
+    // const floorShape = new CANNON.Plane();
+    // const floorBody = new CANNON.Body();
+    // floorBody.mass = 0;
+    // floorBody.addShape(floorShape);
+    // floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
+    // world.addBody(floorBody);
 
     //Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff);
@@ -139,7 +151,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         scene.add(gltf.scene);
+        console.log(gltf.scene);
     });
+
+    //Create Archer body
+    // archer.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI/2 );
+    // let z180 = new CANNON.Quaternion();
+    // z180.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI );
+    // archer.quaternion = z180.mult(archer.quaternion);
+    world.addBody(archer);
+    console.log(archer);
 
     // let updatePistol = () => {
     //     if(obj.pistol){
@@ -157,6 +178,44 @@ document.addEventListener('DOMContentLoaded', () => {
     //     updatePistol();
     //     scene.add(obj.pistol);
     // });
+
+    //testSphere
+    const objectsToUpdate = [];
+
+    const sphereGeometry  = new THREE.SphereBufferGeometry(1, 20, 20);
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+        metalness: .3,
+        roughness: .4,
+    });
+
+    //sphere
+    const createSphere = (radius, position) => {
+        const mesh = new THREE.Mesh(
+            sphereGeometry,
+            sphereMaterial
+        )
+        mesh.scale.set(radius, radius, radius)
+        mesh.castShadow = true;
+        mesh.position.copy(position);
+        scene.add(mesh);
+
+        //Cannon.js body
+        const shape = new CANNON.Sphere(radius);
+        const body = new CANNON.Body({
+            mass: 1,
+            position: new CANNON.Vec3(0, 3, 0),
+            shape,
+            material: defaultMaterial
+        });
+        body.position.copy(position);
+        world.addBody(body);
+
+        // save  in objects to update
+        objectsToUpdate.push({
+            mesh,
+            body
+        })
+    }
 
     /**
      * Sizes
@@ -229,6 +288,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(keyborad['a']){
             moveSide(-time * .01);
             // updatePistol();
+        }
+        if(keyborad['9']){
+            debugObject.createSphere();
         }
         if(keyborad['0']){
             if(timer < 0){
@@ -361,6 +423,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //update phycics world
         world.step(1/60, deltaTime, 3);
+
+        for(const object of objectsToUpdate){
+            object.mesh.position.copy(object.body.position);
+            object.mesh.quaternion.copy(object.body.quaternion);
+        }
 
         // Update controls
         keyboradControl(deltaTime);
