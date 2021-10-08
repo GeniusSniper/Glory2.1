@@ -1,4 +1,4 @@
-// import './index.css';
+import './index.css';
 import * as dat from 'dat.gui';
 import CANNON from 'cannon';//physics engine
 import * as THREE from 'three';
