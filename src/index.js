@@ -173,6 +173,40 @@ document.addEventListener('DOMContentLoaded', () => {
         scene.add(gltf.scene);
     });
 
+    gltfLoader.load('target.gltf', gltf => {
+        gltf.scene.traverse( child => {
+            if(child.isMesh){
+            let verts = [], faces = [], scale = child.scale;
+                let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
+
+                //create vertices
+                for (let i = 0; i < archerGeo.vertices.length; i++) {
+
+                    let x = scale.x * archerGeo.vertices[i].x;
+                    let y = scale.y * archerGeo.vertices[i].y;
+                    let z = scale.z * archerGeo.vertices[i].z;
+
+                    verts.push(new CANNON.Vec3(x, y, z));
+                }
+
+                //create faces
+                for (let i = 0; i < archerGeo.faces.length; i++) {
+
+                    let a = archerGeo.faces[i].a;
+                    let b = archerGeo.faces[i].b;
+                    let c = archerGeo.faces[i].c;
+
+                    faces.push([a, b, c]);
+                }
+
+                //setup the phycics
+                let part = new CANNON.ConvexPolyhedron(verts, faces);
+                archer.addShape(part);
+            }
+        })
+        scene.add(gltf.scene);
+    })  
+
     //Create Archer body
     // archer.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI/2 );
     // let z180 = new CANNON.Quaternion();
