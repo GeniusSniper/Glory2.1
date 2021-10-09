@@ -271,6 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    //shooting
+    const shot = () => {
+
+    }
+
     /**
      * Sizes
      */
@@ -368,6 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(keyborad['y']){
             lock = false;
             canvas.requestPointerLock();
+        }
+        if(keyborad[' ']){
+            shot();
         }
     }
 
