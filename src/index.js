@@ -49,6 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let obj = {};
 
+    /**
+     * Sizes
+     */
+    const sizes = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
     // Canvas
     const canvas = document.querySelector('canvas.webgl');
 
@@ -74,6 +81,24 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     world.addContactMaterial(defaultContactMaterial);
     world.defaultContactMaterial = defaultContactMaterial;
+
+    
+
+    /**
+     * Camera
+     */
+    // Base camera
+    const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100);
+    camera.position.x = 0;
+    camera.position.y = 2;
+    camera.position.z = 9;
+    scene.add(camera);
+
+    // Controls
+    // const controls = new OrbitControls(camera, canvas);
+    // controls.enableDamping = true;
+    // let controls = new FirstPersonControls(camera, canvas);
+    // const control = new PointerLockControls(camera, canvas);
 
 
     //Floor
@@ -275,7 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let sphereBody = new CANNON.Body({ mass: 5 });
     let sphereShape = new CANNON.Sphere(1.3);
     sphereBody.addShape(sphereShape);
-    sphereBody.position.set(0,5,0);
+    sphereBody.position.set(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z
+        );
     sphereBody.linearDamping = 0.9;
     world.addBody(sphereBody);
     let ballShape = new CANNON.Sphere(0.2);
@@ -301,10 +330,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ballBody.addShape(ballShape);
             let ballMesh = new THREE.Mesh( ballGeometry, material );
             world.addBody(ballBody);
+            console.log(ballBody);
             scene.add(ballMesh);
-            ballMesh.castShadow = true;
-            ballMesh.receiveShadow = true;
-            objectsToUpdate.push(ballMesh, ballBody);
+            // ballMesh.castShadow = true;
+            // ballMesh.receiveShadow = true;
+            objectsToUpdate.push({
+                ballMesh, 
+                ballBody
+            });
             getShootDir(shootDirection);
             ballBody.velocity.set(  shootDirection.x * shootVelo,
                                     shootDirection.y * shootVelo,
@@ -318,14 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ballMesh.position.set(x,y,z);
         // }
     }
-
-    /**
-     * Sizes
-     */
-    const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight
-    };
 
     window.addEventListener('resize', () =>
     {
@@ -341,22 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setSize(sizes.width, sizes.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     });
-
-    /**
-     * Camera
-     */
-    // Base camera
-    const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100);
-    camera.position.x = 0;
-    camera.position.y = 2;
-    camera.position.z = 9;
-    scene.add(camera);
-
-    // Controls
-    // const controls = new OrbitControls(camera, canvas);
-    // controls.enableDamping = true;
-    // let controls = new FirstPersonControls(camera, canvas);
-    // const control = new PointerLockControls(camera, canvas);
 
     /**
      * Renderer
