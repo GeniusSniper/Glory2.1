@@ -272,8 +272,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //shooting
-    const shot = () => {
+    let sphereBody = new CANNON.Body({ mass: 5 });
+    let sphereShape = new CANNON.Sphere(1.3);
+    sphereBody.addShape(sphereShape);
+    sphereBody.position.set(0,5,0);
+    sphereBody.linearDamping = 0.9;
+    world.addBody(sphereBody);
+    let ballShape = new CANNON.Sphere(0.2);
+    let ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
+    let shootDirection = new THREE.Vector3();
+    let shootVelo = 15;
+    // let projector = new THREE.Projector();
+    let material = new THREE.MeshLambertMaterial( { color: 0xdddddd } );
+    const getShootDir = (targetVec) => {
+        let vector = targetVec;
+        targetVec.set(0,0,1);
+        // projector.unprojectVector(vector, camera);
+        let ray = new THREE.Ray(sphereBody.position, vector.sub(sphereBody.position).normalize() );
+        targetVec.copy(ray.direction);
+    }
 
+    const shot = () => {
+        // if(controls.enabled==true){
+            let x = sphereBody.position.x;
+            let y = sphereBody.position.y;
+            let z = sphereBody.position.z;
+            let ballBody = new CANNON.Body({ mass: 1 });
+            ballBody.addShape(ballShape);
+            let ballMesh = new THREE.Mesh( ballGeometry, material );
+            world.addBody(ballBody);
+            scene.add(ballMesh);
+            ballMesh.castShadow = true;
+            ballMesh.receiveShadow = true;
+            objectsToUpdate.push(ballMesh, ballBody);
+            getShootDir(shootDirection);
+            ballBody.velocity.set(  shootDirection.x * shootVelo,
+                                    shootDirection.y * shootVelo,
+                                    shootDirection.z * shootVelo);
+
+            // Move the ball outside the player sphere
+            // x += shootDirection.x * (sphereShape.radius*1.02 + ballShape.radius);
+            // y += shootDirection.y * (sphereShape.radius*1.02 + ballShape.radius);
+            // z += shootDirection.z * (sphereShape.radius*1.02 + ballShape.radius);
+            ballBody.position.set(x,y,z);
+            ballMesh.position.set(x,y,z);
+        // }
     }
 
     /**
