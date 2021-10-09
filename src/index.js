@@ -6,7 +6,7 @@ import * as THREE from 'three';
 // import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import Stats from 'stats.js'
+import Stats from 'stats.js';
 
 let keyborad = [];
 let time = Date.now();
@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     world.broadphase = new CANNON.SAPBroadphase(world); // creating ground
     world.allowSleep = true;
     world.gravity.set(0, - 9.82, 0);
+    // world.gravity.set(0, - 1, 0);
 
     // Materials
     const defaultMaterial = new CANNON.Material('default');// default material for cannon
