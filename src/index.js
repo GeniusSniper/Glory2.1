@@ -1,4 +1,4 @@
-import './index.css';
+// import './index.css';
 import * as dat from 'dat.gui';
 import CANNON from 'cannon';//physics engine
 import * as THREE from 'three';
@@ -143,24 +143,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 // archer.addShape(part);
 
                 let verts = [], faces = [], scale = child.scale;
-                let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
+                let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
                 //create vertices
-                for (let i = 0; i < archerGeo.vertices.length; i++) {
+                for (let i = 0; i < geometry.vertices.length; i++) {
 
-                    let x = scale.x * archerGeo.vertices[i].x;
-                    let y = scale.y * archerGeo.vertices[i].y;
-                    let z = scale.z * archerGeo.vertices[i].z;
+                    let x = scale.x * geometry.vertices[i].x;
+                    let y = scale.y * geometry.vertices[i].y;
+                    let z = scale.z * geometry.vertices[i].z;
             
                     verts.push(new CANNON.Vec3(x, y, z));
                 }
             
                 //create faces
-                for (let i = 0; i < archerGeo.faces.length; i++) {
+                for (let i = 0; i < geometry.faces.length; i++) {
             
-                    let a = archerGeo.faces[i].a;
-                    let b = archerGeo.faces[i].b;
-                    let c = archerGeo.faces[i].c;
+                    let a = geometry.faces[i].a;
+                    let b = geometry.faces[i].b;
+                    let c = geometry.faces[i].c;
             
                     faces.push([a, b, c]);
                 }
@@ -177,24 +177,24 @@ document.addEventListener('DOMContentLoaded', () => {
         gltf.scene.traverse( child => {
             if(child.isMesh){
             let verts = [], faces = [], scale = child.scale;
-                let archerGeo = new THREE.Geometry().fromBufferGeometry(child.geometry);
+                let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
                 //create vertices
-                for (let i = 0; i < archerGeo.vertices.length; i++) {
+                for (let i = 0; i < geometry.vertices.length; i++) {
 
-                    let x = scale.x * archerGeo.vertices[i].x;
-                    let y = scale.y * archerGeo.vertices[i].y;
-                    let z = scale.z * archerGeo.vertices[i].z;
+                    let x = scale.x * geometry.vertices[i].x;
+                    let y = scale.y * geometry.vertices[i].y;
+                    let z = scale.z * geometry.vertices[i].z;
 
                     verts.push(new CANNON.Vec3(x, y, z));
                 }
 
                 //create faces
-                for (let i = 0; i < archerGeo.faces.length; i++) {
+                for (let i = 0; i < geometry.faces.length; i++) {
 
-                    let a = archerGeo.faces[i].a;
-                    let b = archerGeo.faces[i].b;
-                    let c = archerGeo.faces[i].c;
+                    let a = geometry.faces[i].a;
+                    let b = geometry.faces[i].b;
+                    let c = geometry.faces[i].c;
 
                     faces.push([a, b, c]);
                 }
