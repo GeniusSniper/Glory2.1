@@ -21,10 +21,10 @@ addEventListener('keyup', e => {
     keyborad[e.key] = false;
 });
 
-var stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
 document.addEventListener('DOMContentLoaded', () => {
+    var stats = new Stats();
+    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
     /**
      * Base
      */
@@ -330,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ballBody.addShape(ballShape);
             let ballMesh = new THREE.Mesh( ballGeometry, material );
             world.addBody(ballBody);
-            console.log(ballBody);
             scene.add(ballMesh);
             // ballMesh.castShadow = true;
             // ballMesh.receiveShadow = true;
