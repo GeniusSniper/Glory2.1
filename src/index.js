@@ -8,20 +8,20 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import Stats from 'stats.js';
 
-let keyborad = [];
-let time = Date.now();
-let timer = 0;
-
-addEventListener('keydown', e => {
-    console.log(e.key);
-    keyborad[e.key] = true;
-});
-
-addEventListener('keyup', e => {
-    keyborad[e.key] = false;
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+    let keyborad = [];
+    let time = Date.now();
+    let timer = 0;
+
+    addEventListener('keydown', e => {
+        console.log(e.key);
+        keyborad[e.key] = true;
+    });
+
+    addEventListener('keyup', e => {
+        keyborad[e.key] = false;
+    });
+
     var stats = new Stats();
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild( stats.dom );
