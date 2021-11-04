@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Base
      */
     //FPS
+    console.log('test for production')
 
     // Debug
     const gui = new dat.GUI({
