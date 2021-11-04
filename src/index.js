@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // archer.addShape(part);
 
-                let verts = [], faces = [], scale = child.scale;
+                let verts = [], faces = [], scale = child.scale;//custtom object
                 let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
                 //create vertices
