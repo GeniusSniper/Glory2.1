@@ -145,93 +145,93 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     gltfLoader.load('./src/models/range.glb', gltf => {
         // console.log(gltf);
-        gltf.scene.traverse( child => {
-            // console.log(child);
-            if(child.isMesh){
-                // let verts = [], faces = [];
+        // gltf.scene.traverse( child => {
+        //     // console.log(child);
+        //     if(child.isMesh){
+        //         // let verts = [], faces = [];
 
-                // // Get vertices
-                // let arcPos = child.geometry.attributes.position.array,
-                //     arcIdx = child.geometry.index.array,
-                //     arcSize = child.geometry.attributes.position.itemSize;
-                // for(let i = 0; i < arcPos.length; i+=3){
-                //     verts.push(
-                //         new CANNON.Vec3( arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2])
-                //     );
-                //     // faces.push(arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2]);
-                // }
+        //         // // Get vertices
+        //         // let arcPos = child.geometry.attributes.position.array,
+        //         //     arcIdx = child.geometry.index.array,
+        //         //     arcSize = child.geometry.attributes.position.itemSize;
+        //         // for(let i = 0; i < arcPos.length; i+=3){
+        //         //     verts.push(
+        //         //         new CANNON.Vec3( arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2])
+        //         //     );
+        //         //     // faces.push(arcPos[(arcIdx[i] * arcSize)], arcPos[(arcIdx[i] * arcSize) + 1], arcPos[(arcIdx[i] * arcSize) + 2]);
+        //         // }
 
-                // // console.log(verts, faces);
-                // console.log(child.geometry);
-                // // Construct polyhedron
-                // let part = new CANNON.ConvexPolyhedron(verts, faces);
+        //         // // console.log(verts, faces);
+        //         // console.log(child.geometry);
+        //         // // Construct polyhedron
+        //         // let part = new CANNON.ConvexPolyhedron(verts, faces);
 
-                // archer.addShape(part);
+        //         // archer.addShape(part);
 
-                let verts = [], faces = [], scale = child.scale;//custtom object
-                let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
+        //         let verts = [], faces = [], scale = child.scale;//custtom object
+        //         let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
-                //create vertices
-                for (let i = 0; i < geometry.vertices.length; i++) {
-
-                    let x = scale.x * geometry.vertices[i].x;
-                    let y = scale.y * geometry.vertices[i].y;
-                    let z = scale.z * geometry.vertices[i].z;
+        //         //create vertices
+        //         for (let i = 0; i < geometry.vertices.length; i++) {
+                    
+        //             let x = scale.x * geometry.vertices[i].x;
+        //             let y = scale.y * geometry.vertices[i].y;
+        //             let z = scale.z * geometry.vertices[i].z;
             
-                    verts.push(new CANNON.Vec3(x, y, z));
-                }
+        //             verts.push(new CANNON.Vec3(x, y, z));
+        //         }
             
-                //create faces
-                for (let i = 0; i < geometry.faces.length; i++) {
+        //         //create faces
+        //         for (let i = 0; i < geometry.faces.length; i++) {
             
-                    let a = geometry.faces[i].a;
-                    let b = geometry.faces[i].b;
-                    let c = geometry.faces[i].c;
+        //             let a = geometry.faces[i].a;
+        //             let b = geometry.faces[i].b;
+        //             let c = geometry.faces[i].c;
             
-                    faces.push([a, b, c]);
-                }
+        //             faces.push([a, b, c]);
+        //         }
 
-                //setup the phycics
-                let part = new CANNON.ConvexPolyhedron(verts, faces);
-                archer.addShape(part);
-            }
-        })
+        //         //setup the phycics
+        //         let part = new CANNON.ConvexPolyhedron(verts, faces);
+        //         archer.addShape(part);
+        //     }
+        // })
         scene.add(gltf.scene);
     });
 
-    gltfLoader.load('./src/models/target.gltf', gltf => {
-        gltf.scene.traverse( child => {
-            if(child.isMesh){
-            let verts = [], faces = [], scale = child.scale;
-                let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
+    // gltfLoader.load('./src/models/target.gltf', gltf => {
+    //     gltf.scene.traverse( child => {
+    //         if(child.isMesh){
+    //         let verts = [], faces = [], scale = child.scale;
+    //             let geometry = new THREE.Geometry().fromBufferGeometry(child.geometry);
 
-                //create vertices
-                for (let i = 0; i < geometry.vertices.length; i++) {
+    //             //create vertices
+    //             for (let i = 0; i < geometry.vertices.length; i++) {
 
-                    let x = scale.x * geometry.vertices[i].x;
-                    let y = scale.y * geometry.vertices[i].y;
-                    let z = scale.z * geometry.vertices[i].z;
+    //                 let x = scale.x * geometry.vertices[i].x;
+    //                 let y = scale.y * geometry.vertices[i].y;
+    //                 let z = scale.z * geometry.vertices[i].z;
 
-                    verts.push(new CANNON.Vec3(x, y, z));
-                }
+    //                 verts.push(new CANNON.Vec3(x, y, z));
+    //             }
 
-                //create faces
-                for (let i = 0; i < geometry.faces.length; i++) {
+    //             //create faces
+    //             for (let i = 0; i < geometry.faces.length; i++) {
 
-                    let a = geometry.faces[i].a;
-                    let b = geometry.faces[i].b;
-                    let c = geometry.faces[i].c;
+    //                 let a = geometry.faces[i].a;
+    //                 let b = geometry.faces[i].b;
+    //                 let c = geometry.faces[i].c;
 
-                    faces.push([a, b, c]);
-                }
+    //                 faces.push([a, b, c]);
+    //             }
 
-                //setup the phycics
-                let part = new CANNON.ConvexPolyhedron(verts, faces);
-                archer.addShape(part);
-            }
-        })
-        scene.add(gltf.scene);
-    })  
+    //             //setup the phycics
+    //             let part = new CANNON.ConvexPolyhedron(verts, faces);
+    //             archer.addShape(part);
+    //         }
+    //     })
+    //     scene.add(gltf.scene);
+    // })  
 
     //Create Archer body
     // archer.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI/2 );
@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.requestPointerLock();
         }
         if(keyborad[' ']){
-            shot();
+            // shot();
         }
     }
 
